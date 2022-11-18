@@ -27,7 +27,6 @@ void fc::App::init()
     main_flow_.resize(x(), y(), w(), h());
     add(main_flow_);
     resizable(main_flow_);
-
 }
 
 void fc::App::exit()
