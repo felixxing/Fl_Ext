@@ -1,0 +1,29 @@
+#ifndef APP_HPP
+#define APP_HPP
+
+#include <FL/Fl.H>
+#include <FL/Fl_Text_Editor.H>
+#include <FL/Fl_Double_Window.H>
+
+#include "Fl_Flow.hpp"
+
+namespace fc
+{
+    class App : public Fl_Double_Window
+    {
+      private:
+        Fl_Flowc main_flow_;
+
+      public:
+        App(int W, int H, const char* title = nullptr);
+        ~App();
+
+        void init();
+        void exit();
+
+        int run(int argc, char** argv);
+    };
+
+} // namespace fc
+
+#endif // APP_HPP
