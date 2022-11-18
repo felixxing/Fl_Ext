@@ -152,15 +152,14 @@ class Fl_Ext_Attrib
         return widget_;
     }
 
-    inline void push_attrib()
+    inline void push()
     {
-        callback_ext(flcb_func_);
+        callback(flcb_func_);
         normal_box(normal_box_);
     }
 
-    inline void pull_attrib()
+    inline void pull()
     {
-        normal_box_ = widget_->box();
         flcb_func_ = static_cast<Flcb*>(widget_->user_data());
     }
 
@@ -202,62 +201,64 @@ class Fl_Ext_Attrib
     }
 
     // color attrib extention
-    inline void color_ext(int a)
+    inline void color(int a)
     {
         widget_->color(fl_hex_color(a));
     }
 
-    inline void color_ext(int r, int g, int b)
+    inline void color(int r, int g, int b)
     {
         widget_->color(fl_rgb_color(r, g, b));
     }
 
-    inline void selection_color_ext(int a)
+    inline void selection_color(int a)
     {
         widget_->selection_color(fl_hex_color(a));
     }
 
-    inline void selection_color_ext(int r, int g, int b)
+    inline void selection_color(int r, int g, int b)
     {
         widget_->selection_color(fl_rgb_color(r, g, b));
     }
 
-    inline void labelcolor_ext(int a)
+    inline void labelcolor(int a)
     {
         widget_->labelcolor(fl_hex_color(a));
     }
 
-    inline void labelcolor_ext(int r, int g, int b)
+    inline void labelcolor(int r, int g, int b)
     {
         widget_->labelcolor(fl_rgb_color(r, g, b));
     }
 
     // callback extension
-    inline void callback_ext(Flcb* cb)
+    inline void callback(Flcb* cb)
     {
         flcb_func_ = cb;
         widget_->callback(flcb_bridge, flcb_func_);
     }
 
-    inline void callback_ext(Flcb& cb)
+    inline void callback(Flcb& cb)
     {
         flcb_func_ = &cb;
         widget_->callback(flcb_bridge, flcb_func_);
     }
 
-    inline Flcb* callback_ext() const
+    inline Flcb* callback() const
     {
         return flcb_func_;
     }
 };
 
 template <typename Wd_T> //
-class Fl_Ext : public Wd_T, public Fl_Ext_Attrib<Wd_T>
+class Fl_Ext : public Wd_T
 {
   public:
+    Fl_Ext_Attrib<Wd_T> ext;
+
     inline Fl_Ext(int X, int Y, int W, int H, const char* L = 0) //
         : Wd_T(X, Y, W, H, L),                                   //
-          Fl_Ext_Attrib<Wd_T>(this)
+          ext(this)
     {
     }
 };
@@ -305,23 +306,27 @@ class Fl_Btn_Ext_Attrib : public Fl_Ext_Attrib<Btn_B>
 };
 
 template <typename Btn_T> //
-class Fl_Ext_Btn : public Btn_T, public Fl_Btn_Ext_Attrib<Btn_T>
+class Fl_Btn_Ext : public Btn_T
 {
   public:
-    inline Fl_Ext_Btn(int X, int Y, int W, int H, const char* L = 0) //
+    Fl_Btn_Ext_Attrib<Btn_T> ext;
+
+    inline Fl_Btn_Ext(int X, int Y, int W, int H, const char* L = 0) //
         : Btn_T(X, Y, W, H, L),                                      //
-          Fl_Btn_Ext_Attrib<Btn_T>(this)
+          ext(this)
     {
     }
 };
 
 template <> // special effect for normal button
-class Fl_Ext_Btn<Fl_Button> : public Fl_Button, public Fl_Btn_Ext_Attrib<Fl_Button>
+class Fl_Btn_Ext<Fl_Button> : public Fl_Button
 {
   public:
-    inline Fl_Ext_Btn(int X, int Y, int W, int H, const char* L = 0) //
+    Fl_Btn_Ext_Attrib<Fl_Button> ext;
+
+    inline Fl_Btn_Ext(int X, int Y, int W, int H, const char* L = 0) //
         : Fl_Button(X, Y, W, H, L),                                  //
-          Fl_Btn_Ext_Attrib<Fl_Button>(this)
+          ext(this)
     {
     }
 
@@ -333,19 +338,19 @@ class Fl_Ext_Btn<Fl_Button> : public Fl_Button, public Fl_Btn_Ext_Attrib<Fl_Butt
         {
             case FL_ENTER:
             {
-                box(hover_box_);
+                box(ext.hover_box());
                 redraw();
                 break;
             }
             case FL_LEAVE:
             {
-                box(normal_box_);
+                box(ext.normal_box());
                 redraw();
                 break;
             }
             case FL_DRAG:
             {
-                box(normal_box_);
+                box(ext.normal_box());
                 redraw();
                 break;
             }
