@@ -18,7 +18,8 @@ class Fl_Hover_Ext : public Fl_Ext<Wd_T>
 
     inline Fl_Boxtype hover_box() const;
     inline void hover_box(Fl_Boxtype new_box);
-
+    
+    void box() = delete;
     inline Fl_Boxtype normal_box() const;
     inline void normal_box(Fl_Boxtype new_box);
 

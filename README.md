@@ -75,7 +75,7 @@ parent_widget.add(ext_btn);
 Obtain `attrib` field to use Attribute methods. Special Extensions have extra methods can be used.
 ```cpp
 // Example 2
-Fl_Btn_Ext<Fl_Button>* ext_btn = new Fl_Ext<Fl_Button>(0, 0, 100,100, "Hello world"); // Fl_Button special extensions
+Fl_Hover_Ext<Fl_Button>* ext_btn = new Fl_Hover_Ext<Fl_Button>(0, 0, 100,100, "Hello world"); // Hover effect special extensions
 
 Flcb* cb = ext_btn->attrib.callback(); // Attribute method
 parent_widget.add(ext_btn);

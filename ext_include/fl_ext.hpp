@@ -9,8 +9,8 @@
 #include <string>
 #include <functional>
 
-inline float dpi_scale = 1.5f;
-#define sdpi(pixel) static_cast<int>(dpi_scale * pixel)
+inline float fl_ext_dpi_scale = 1.5f;
+#define sdpi(pixel) static_cast<int>(fl_ext_dpi_scale * pixel)
 using Flcb = std::function<void(Fl_Widget* widget)>;
 
 inline const int box_count = 6;
@@ -354,7 +354,7 @@ inline void Fl_Ext_Attrib<Wd_B>::callback(Flcb& cb)
 
 template <typename Wd_T>
 inline Fl_Ext<Wd_T>::Fl_Ext(int X, int Y, int W, int H, const char* L) //
-    : Wd_T(X, Y, W, H, L),                                             //
+    : Wd_T(sdpi(X), sdpi(Y), sdpi(W), sdpi(H), L),                     //
       attrib(this)
 {
 }
