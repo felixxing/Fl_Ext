@@ -9,11 +9,11 @@
 #include <string>
 #include <functional>
 
-inline const int box_count = 6;
 inline float dpi_scale = 1.5f;
 #define sdpi(pixel) static_cast<int>(dpi_scale * pixel)
-
 using Flcb = std::function<void(Fl_Widget* widget)>;
+
+inline const int box_count = 6;
 enum Ext_Box
 {
     BTN_UP_BOX = 0,
@@ -33,16 +33,19 @@ class Fl_Ext_Color
   public:
     inline Fl_Ext_Color();
     inline Fl_Ext_Color(unsigned char r, unsigned char g, unsigned char b);
-    inline Fl_Ext_Color(unsigned int index, bool get = false);
+    inline Fl_Ext_Color(unsigned int hex, bool index = false);
 
     inline operator Fl_Color();
     inline int r() const { return r_; }
     inline int g() const { return g_; }
     inline int b() const { return b_; }
+    inline void r(unsigned char r) { r_ = r; }
+    inline void g(unsigned char g) { g_ = g; }
+    inline void b(unsigned char b) { b_ = b; }
 
     inline void set(unsigned char r, unsigned char g, unsigned char b);
     inline void set(unsigned int hex);
-    inline void get(unsigned int index);
+    inline void index(unsigned int index);
 };
 
 inline void flcb_bridge(Fl_Widget* widget, void* func_ptr)
@@ -161,12 +164,12 @@ class Fl_Ext_Attrib
     inline void callback(Flcb& cb);
 };
 template <typename Wd_B>
-Fl_Ext_Attrib<Wd_B> make_ext(Wd_B& widget)
+Fl_Ext_Attrib<Wd_B> make_attrib(Wd_B& widget)
 {
     return Fl_Ext_Attrib<Wd_B>(widget);
 }
 template <typename Wd_B>
-Fl_Ext_Attrib<Wd_B> make_ext(Wd_B* widget)
+Fl_Ext_Attrib<Wd_B> make_attrib(Wd_B* widget)
 {
     return Fl_Ext_Attrib<Wd_B>(widget);
 }
@@ -175,7 +178,7 @@ template <typename Wd_T>
 class Fl_Ext : public Wd_T
 {
   public:
-    Fl_Ext_Attrib<Wd_T> ext;
+    Fl_Ext_Attrib<Wd_T> attrib;
     inline Fl_Ext(int X, int Y, int W, int H, const char* L = 0);
 };
 
@@ -194,17 +197,17 @@ inline Fl_Ext_Color::Fl_Ext_Color(unsigned char r, unsigned char g, unsigned cha
     b_ = b;
 }
 
-inline Fl_Ext_Color::Fl_Ext_Color(unsigned int index, bool get)
+inline Fl_Ext_Color::Fl_Ext_Color(unsigned int hex, bool index)
 {
-    if (get)
+    if (index)
     {
-        Fl::get_color(index, r_, g_, b_);
+        Fl::get_color(hex, r_, g_, b_);
     }
     else
     {
-        r_ = index / 0x10000;
-        g_ = ((index / 0x100) % 0x100);
-        b_ = index % 0x100;
+        r_ = hex / 0x10000;
+        g_ = ((hex / 0x100) % 0x100);
+        b_ = hex % 0x100;
     }
 }
 
@@ -227,7 +230,7 @@ inline void Fl_Ext_Color::set(unsigned int hex)
     b_ = hex % 0x100;
 }
 
-inline void Fl_Ext_Color::get(unsigned int index)
+inline void Fl_Ext_Color::index(unsigned int index)
 {
     Fl::get_color(index, r_, g_, b_);
 }
@@ -353,7 +356,7 @@ inline void Fl_Ext_Attrib<Wd_B>::callback(Flcb& cb)
 template <typename Wd_T>
 inline Fl_Ext<Wd_T>::Fl_Ext(int X, int Y, int W, int H, const char* L) //
     : Wd_T(X, Y, W, H, L),                                             //
-      ext(this)
+      attrib(this)
 {
 }
 

@@ -93,7 +93,7 @@ template <typename Btn_T>
 inline void Fl_Btn_Ext<Btn_T>::click_box(Fl_Boxtype new_box)
 {
     click_box_ = new_box;
-    this->ext.widget().down_box(click_box_);
+    this->down_box(click_box_);
 }
 
 template <typename Btn_T>
@@ -106,7 +106,7 @@ template <typename Btn_T>
 inline void Fl_Btn_Ext<Btn_T>::normal_box(Fl_Boxtype new_box)
 {
     normal_box_ = new_box;
-    this->ext.widget().box(normal_box_);
+    this->box(normal_box_);
 }
 
 template <typename Btn_T>
@@ -118,14 +118,14 @@ inline int Fl_Btn_Ext<Btn_T>::handle(int event)
     {
         case FL_ENTER:
         {
-            this->ext.widget().box(hover_box_);
-            this->ext.widget().redraw();
+            this->box(hover_box_);
+            this->redraw();
             break;
         }
         case FL_LEAVE:
         {
-            this->ext.widget().box(normal_box_);
-            this->ext.widget().redraw();
+            this->box(normal_box_);
+            this->redraw();
             break;
         }
     }

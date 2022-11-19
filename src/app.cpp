@@ -1,6 +1,7 @@
 #include "app.hpp"
 
 #include "fl_ext.hpp"
+#include "fl_btn_ext.hpp"
 
 #include <iostream>
 #include <FL/Fl_Progress.H>
