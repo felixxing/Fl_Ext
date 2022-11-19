@@ -1,10 +1,10 @@
 #include "app.hpp"
 
 #include "Fl_Ext.hpp"
-#include "Fl_Btn_Ext.hpp"
+#include "Fl_Hover_Ext.hpp"
 
 #include <iostream>
-#include <FL/Fl_Progress.H>
+#include <FL/Fl_Input.H>
 
 #include "test.cpp"
 
@@ -22,13 +22,16 @@ fc::App::~App()
 
 void fc::App::init()
 {
-    Fl_Btn_Ext<Fl_Button>* btn = new Fl_Btn_Ext<Fl_Button>(0, 0, 0, 0, "Hello world");
+    Fl_Hover_Ext<Fl_Input>* btn = new Fl_Hover_Ext<Fl_Input>(0, 0, 200, 200, "&Hello world");
     btn->hover_box(FL_FLAT_BOX);
+    btn->normal_box(FL_UP_BOX);
+    Fl_Button* btn2 = new Fl_Button(300, 300, 200, 200, "Hello world");
 
     static Flcb ccb = [](Fl_Widget* w) { std::cout << 111; };
     btn->attrib.callback(ccb);
 
-    rule(btn, "=<=^");
+    add(btn);
+    add(btn2);
 }
 
 void fc::App::exit()
