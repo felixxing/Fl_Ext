@@ -1,7 +1,7 @@
 #include "app.hpp"
 
-#include "fl_ext.hpp"
-#include "fl_btn_ext.hpp"
+#include "Fl_Ext.hpp"
+#include "Fl_Btn_Ext.hpp"
 
 #include <iostream>
 #include <FL/Fl_Progress.H>
@@ -9,7 +9,7 @@
 #include "test.cpp"
 
 fc::App::App(int W, int H, const char* title) //
-    : Fl_Double_Window(sdpi(W), sdpi(H), title)
+    : Fl_Win_Ext<Fl_Double_Window>(sdpi(100), sdpi(100), sdpi(W), sdpi(H), title)
 {
     Fl::visible_focus();
     init();
@@ -22,12 +22,13 @@ fc::App::~App()
 
 void fc::App::init()
 {
-    end();
+    Fl_Btn_Ext<Fl_Button>* btn = new Fl_Btn_Ext<Fl_Button>(0, 0, 0, 0, "Hello world");
+    btn->hover_box(FL_FLAT_BOX);
 
-    main_flow_.end();
-    main_flow_.resize(x(), y(), w(), h());
-    add(main_flow_);
-    resizable(main_flow_);
+    static Flcb ccb = [](Fl_Widget* w) { std::cout << 111; };
+    btn->attrib.callback(ccb);
+
+    rule(btn, "=<=^");
 }
 
 void fc::App::exit()

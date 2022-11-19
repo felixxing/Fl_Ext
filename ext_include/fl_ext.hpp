@@ -105,22 +105,21 @@ namespace
         fl_rect(x, y, w, h);
     }
 
-    class Initializer
-    {
-      public:
-        inline Initializer()
-        {
-            Fl::set_boxtype(fl_ext_box(BTN_UP_BOX), ::ext_btn_up_box, 0, 0, 0, 0);
-            Fl::set_boxtype(fl_ext_box(BTN_DOWN_BOX), ::ext_btn_down_box, 0, 0, 0, 0);
-            Fl::set_boxtype(fl_ext_box(BTN_HOVER_BOX), ::ext_btn_hover_box, 0, 0, 0, 0);
-            Fl::set_boxtype(fl_ext_box(BTN_FRAME_BOX), ::ext_frame_box, 0, 0, 0, 0);
-            Fl::set_boxtype(fl_ext_box(INPUT_IDLE_BOX), ::ext_input_idle_box, 0, 0, 0, 0);
-            Fl::set_boxtype(fl_ext_box(INPUT_ACTIVE_BOX), ::ext_input_active_box, 0, 0, 0, 0);
-        }
-    };
-    inline static Initializer initializer;
-
 }; // namespace
+
+class Style_Initializer
+{
+  public:
+    inline Style_Initializer()
+    {
+        Fl::set_boxtype(fl_ext_box(BTN_UP_BOX), ::ext_btn_up_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_DOWN_BOX), ::ext_btn_down_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_HOVER_BOX), ::ext_btn_hover_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_FRAME_BOX), ::ext_frame_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(INPUT_IDLE_BOX), ::ext_input_idle_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(INPUT_ACTIVE_BOX), ::ext_input_active_box, 0, 0, 0, 0);
+    }
+};
 
 // widget extensions
 template <typename Wd_B>
@@ -359,7 +358,5 @@ inline Fl_Ext<Wd_T>::Fl_Ext(int X, int Y, int W, int H, const char* L) //
       attrib(this)
 {
 }
-
-//////////////////////////////Blank//////////////////////////////
 
 #endif // FL_EXT_HPP

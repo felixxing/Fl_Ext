@@ -3,36 +3,25 @@
 #include <exception>
 #include <string>
 
-template <typename T> struct Fl_Exception
+struct Fl_Exception
 {
-    Fl_Exception(const char* _message) : m_message(_message)
-    {
-    }
-    Fl_Exception(const std::string& _message) : m_message(_message)
-    {
-    }
-    virtual ~Fl_Exception() throw()
-    {
-    }
+    inline Fl_Exception(const char* _message) : m_message(_message) {}
+    inline Fl_Exception(const std::string& _message) : m_message(_message) {}
+    inline virtual ~Fl_Exception() throw() {}
 
-    virtual const char* what() const throw()
-    {
-        return m_message.c_str();
-    }
+    inline virtual const char* what() const throw() { return m_message.c_str(); }
 
   private:
     std::string m_message;
 };
 
-#define Fl_Exception Fl_Exception<char>
-
 #include <FL/Fl.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Group.H>
 
-template <typename T> struct Fl_Helper
+struct Fl_Helper
 {
-    static void position(Fl_Widget_Tracker _w, int _x, int _y)
+    static inline void position(Fl_Widget_Tracker _w, int _x, int _y)
     {
         Fl_Widget_Tracker parent = _w.widget()->parent();
         int x = 0;
@@ -48,11 +37,9 @@ template <typename T> struct Fl_Helper
     }
 };
 
-#define Fl_Helper Fl_Helper<char>
-
 #include <FL/Fl.H>
 
-template <typename T> struct Fl_Transform
+struct Fl_Transform
 {
     Fl_Widget_Tracker m_widget;
     int m_padding;
@@ -65,7 +52,7 @@ template <typename T> struct Fl_Transform
     int m_cw;
     int m_ch;
 
-    Fl_Transform(Fl_Widget_Tracker _widget, int _padding)
+    inline Fl_Transform(Fl_Widget_Tracker _widget, int _padding)
         : m_widget(_widget), m_padding(_padding), m_x(), m_y(), m_w(), m_h(), m_cx(), m_cy(), m_cw(), m_ch()
     {
         m_x = _widget.widget()->x() - m_padding;
@@ -79,7 +66,7 @@ template <typename T> struct Fl_Transform
         m_ch = m_h;
     }
 
-    bool contains(Fl_Transform& _other)
+    inline bool contains(Fl_Transform& _other)
     {
         if (_other.m_x < m_x)
             return false;
@@ -92,7 +79,7 @@ template <typename T> struct Fl_Transform
         return true;
     }
 
-    bool colliding(Fl_Transform& _other)
+    inline bool colliding(Fl_Transform& _other)
     {
         if (m_x < _other.m_x)
         {
@@ -119,18 +106,18 @@ template <typename T> struct Fl_Transform
         return true;
     }
 
-    void apply()
+    inline void apply()
     {
         m_widget.widget()->resize(m_cx + m_padding, m_cy + m_padding, m_cw - m_padding * 2, m_ch - m_padding * 2);
     }
 
-    void debug_output()
+    inline void debug_output()
     {
         printf("Committed: %i %i %i %i\n", m_cx, m_cy, m_cw, m_ch);
         printf("Staging: %i %i %i %i\n", m_x, m_y, m_w, m_h);
     }
 
-    void commit()
+    inline void commit()
     {
         m_cx = m_x;
         m_cy = m_y;
@@ -138,7 +125,7 @@ template <typename T> struct Fl_Transform
         m_ch = m_h;
     }
 
-    void rollback()
+    inline void rollback()
     {
         m_x = m_cx;
         m_y = m_cy;
@@ -146,7 +133,7 @@ template <typename T> struct Fl_Transform
         m_h = m_ch;
     }
 
-    void contract(int _w, int _h)
+    inline void contract(int _w, int _h)
     {
         m_x += m_w / 2 - _w / 2;
         m_y += m_h / 2 - _h / 2;
@@ -154,14 +141,14 @@ template <typename T> struct Fl_Transform
         m_h = _h;
     }
 
-    void translate(int _x, int _y)
+    inline void translate(int _x, int _y)
     {
         commit();
         m_x += _x;
         m_y += _y;
     }
 
-    void scale(int _x, int _y)
+    inline void scale(int _x, int _y)
     {
         commit();
         if (_x < 0)
@@ -186,11 +173,9 @@ template <typename T> struct Fl_Transform
     }
 };
 
-#define Fl_Transform Fl_Transform<char>
-
 #include <FL/Fl.H>
 
-template <typename T> struct Fl_Instruction
+struct Fl_Instruction
 {
     static const int NONE = 0;
     static const int EXPAND = 50;
@@ -211,7 +196,7 @@ template <typename T> struct Fl_Instruction
     static const int CENTER_UP = 13;
     static const int CENTER_DOWN = 14;
 
-    static int decode(char c, int _type)
+    inline static int decode(char c, int _type)
     {
         if (_type == EXPAND)
         {
@@ -250,11 +235,9 @@ template <typename T> struct Fl_Instruction
         throw Fl_Exception("Invalid instruction");
     }
 
-    Fl_Instruction() : m_widget(0), m_instruction()
-    {
-    }
+    inline Fl_Instruction() : m_widget(0), m_instruction() {}
 
-    int x_direction()
+    inline int x_direction()
     {
         if (m_instruction == MOVE_LEFT || m_instruction == EXPAND_LEFT || m_instruction == CENTER_LEFT)
         {
@@ -268,7 +251,7 @@ template <typename T> struct Fl_Instruction
         return 0;
     }
 
-    int y_direction()
+    inline int y_direction()
     {
         if (m_instruction == MOVE_UP || m_instruction == EXPAND_UP || m_instruction == CENTER_UP)
         {
@@ -286,15 +269,11 @@ template <typename T> struct Fl_Instruction
     int m_instruction;
 };
 
-#define Fl_Instruction Fl_Instruction<char>
-
 #include <FL/Fl.H>
 
-template <typename T> struct Fl_State
+struct Fl_State
 {
-    Fl_State() : m_widget(0), m_w(), m_h(), m_placed()
-    {
-    }
+    inline Fl_State() : m_widget(0), m_w(), m_h(), m_placed() {}
 
     Fl_Widget_Tracker m_widget;
     int m_w;
@@ -302,16 +281,14 @@ template <typename T> struct Fl_State
     bool m_placed;
 };
 
-#define Fl_State Fl_State<char>
-
 #include <FL/Fl_Group.H>
 
 #include <vector>
 #include <string>
 
-template <typename T> struct Fl_Flow : Fl_Group
+struct Fl_Flow : Fl_Group
 {
-    Fl_Flow(int _x = 0, int _y = 0, int _w = 128, int _h = 128, const char* _label = 0)
+    inline Fl_Flow(int _x = 0, int _y = 0, int _w = 128, int _h = 128, const char* _label = 0)
         : Fl_Group(_x, _y, _w, _h, _label), m_padding(0), m_drawn()
     {
         // box(FL_FLAT_BOX);
@@ -319,18 +296,15 @@ template <typename T> struct Fl_Flow : Fl_Group
         resizable(NULL);
     }
 
-    void set_padding(int _padding)
+    inline void set_padding(int _padding)
     {
         m_padding = _padding;
         resize(x(), y(), w(), h());
     }
 
-    void rule(Fl_Widget& _widget, const std::string& _instructions)
-    {
-        rule(&_widget, _instructions);
-    }
+    inline void rule(Fl_Widget& _widget, const std::string& _instructions) { rule(&_widget, _instructions); }
 
-    void rule(Fl_Widget_Tracker _widget, const std::string& _instructions)
+    inline void rule(Fl_Widget_Tracker _widget, const std::string& _instructions)
     {
         int type = Fl_Instruction::NONE;
 
@@ -363,7 +337,7 @@ template <typename T> struct Fl_Flow : Fl_Group
      * Ensure that widget layout has occurred at least once
      * before initial draw
      */
-    virtual void draw()
+    inline virtual void draw()
     {
         if (!m_drawn)
         {
@@ -376,7 +350,7 @@ template <typename T> struct Fl_Flow : Fl_Group
         Fl_Group::draw();
     }
 
-    virtual void resize(int _x, int _y, int _w, int _h)
+    inline virtual void resize(int _x, int _y, int _w, int _h)
     {
         Fl_Group::resize(_x, _y, _w, _h);
         prepare();
@@ -389,7 +363,7 @@ template <typename T> struct Fl_Flow : Fl_Group
     int m_padding;
     bool m_drawn;
 
-    void process()
+    inline void process()
     {
         Fl_Transform pt(this, 0);
 
@@ -499,7 +473,7 @@ template <typename T> struct Fl_Flow : Fl_Group
         }
     }
 
-    void prepare()
+    inline void prepare()
     {
         /*
          * Remove any states with invalid children
@@ -598,7 +572,5 @@ template <typename T> struct Fl_Flow : Fl_Group
         }
     }
 };
-
-using Fl_Flowc = Fl_Flow<char>;
 
 #endif

@@ -1,4 +1,4 @@
-#include "fl_ext.hpp"
+#include "Fl_Ext.hpp"
 
 // button extensions
 template <typename Btn_B> //

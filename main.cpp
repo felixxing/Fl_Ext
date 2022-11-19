@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "app.hpp"
+#include "Fl_Flow.hpp"
 
 int main(int argc, char** argv)
 {

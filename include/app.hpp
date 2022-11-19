@@ -5,14 +5,13 @@
 #include <FL/Fl_Text_Editor.H>
 #include <FL/Fl_Double_Window.H>
 
-#include "Fl_Flow.hpp"
+#include "Fl_Win_Ext.hpp"
 
 namespace fc
 {
-    class App : public Fl_Double_Window
+    class App : public Fl_Win_Ext<Fl_Double_Window>
     {
       private:
-        Fl_Flowc main_flow_;
 
       public:
         App(int W, int H, const char* title = nullptr);
