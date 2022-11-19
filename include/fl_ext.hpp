@@ -26,7 +26,7 @@ inline void flcb_bridge(Fl_Widget* widget, void* func_ptr)
     (*static_cast<Flcb*>(func_ptr))(widget);
 }
 
-class Ext_Color
+class Fl_Ext_Color
 {
   private:
     unsigned char r_;
@@ -34,21 +34,21 @@ class Ext_Color
     unsigned char b_;
 
   public:
-    Ext_Color()
+    Fl_Ext_Color()
     {
         r_ = 255;
         g_ = 255;
         b_ = 255;
     }
 
-    Ext_Color(unsigned char r, unsigned char g, unsigned char b)
+    Fl_Ext_Color(unsigned char r, unsigned char g, unsigned char b)
     {
         r_ = r;
         g_ = g;
         b_ = b;
     }
 
-    Ext_Color(unsigned int index, bool get = false)
+    Fl_Ext_Color(unsigned int index, bool get = false)
     {
         if (get)
         {
@@ -89,53 +89,53 @@ namespace
 {
     inline void ext_btn_up_box(int x, int y, int w, int h, Fl_Color c)
     {
-        fl_color(Ext_Color(0xE1E1E1));
+        fl_color(Fl_Ext_Color(0xE1E1E1));
         fl_rectf(x, y, w, h);
-        fl_color(Ext_Color(0xADADAD));
+        fl_color(Fl_Ext_Color(0xADADAD));
         fl_rect(x, y, w, h);
     }
 
     inline void ext_btn_down_box(int x, int y, int w, int h, Fl_Color c)
     {
-        fl_color(Ext_Color(0xCCE4F7));
+        fl_color(Fl_Ext_Color(0xCCE4F7));
         fl_rectf(x, y, w, h);
-        fl_color(Ext_Color(0x005499));
+        fl_color(Fl_Ext_Color(0x005499));
         fl_rect(x, y, w, h);
     }
 
     inline void ext_btn_hover_box(int x, int y, int w, int h, Fl_Color c)
     {
-        fl_color(Ext_Color(0xE5F1FB));
+        fl_color(Fl_Ext_Color(0xE5F1FB));
         fl_rectf(x, y, w, h);
-        fl_color(Ext_Color(0x0078D7));
+        fl_color(Fl_Ext_Color(0x0078D7));
         fl_rect(x, y, w, h);
     }
 
     inline void ext_frame_box(int x, int y, int w, int h, Fl_Color c)
     {
-        fl_color(Ext_Color(0x7A7A7A));
+        fl_color(Fl_Ext_Color(0x7A7A7A));
         fl_rect(x, y, w, h);
     }
 
     inline void ext_input_idle_box(int x, int y, int w, int h, Fl_Color c)
     {
-        fl_color(Ext_Color(0xFFFFFF));
+        fl_color(Fl_Ext_Color(0xFFFFFF));
         fl_rectf(x, y, w, h);
-        fl_color(Ext_Color(0x7A7A7A));
+        fl_color(Fl_Ext_Color(0x7A7A7A));
         fl_rect(x, y, w, h);
     }
 
     inline void ext_input_active_box(int x, int y, int w, int h, Fl_Color c)
     {
-        fl_color(Ext_Color(0xFFFFFF));
+        fl_color(Fl_Ext_Color(0xFFFFFF));
         fl_rectf(x, y, w, h);
-        fl_color(Ext_Color(0x0078D7));
+        fl_color(Fl_Ext_Color(0x0078D7));
         fl_rect(x, y, w, h);
     }
 
 }; // namespace
 
-inline Fl_Boxtype ext_box(int index)
+inline Fl_Boxtype fl_ext_box(int index)
 {
 #ifndef NO_BOX_EXT
     return static_cast<Fl_Boxtype>(FL_FREE_BOXTYPE + index);
@@ -161,12 +161,12 @@ class Initializer
   public:
     inline Initializer()
     {
-        Fl::set_boxtype(ext_box(BTN_UP_BOX), ::ext_btn_up_box, 0, 0, 0, 0);
-        Fl::set_boxtype(ext_box(BTN_DOWN_BOX), ::ext_btn_down_box, 0, 0, 0, 0);
-        Fl::set_boxtype(ext_box(BTN_HOVER_BOX), ::ext_btn_hover_box, 0, 0, 0, 0);
-        Fl::set_boxtype(ext_box(BTN_FRAME_BOX), ::ext_frame_box, 0, 0, 0, 0);
-        Fl::set_boxtype(ext_box(INPUT_IDLE_BOX), ::ext_input_idle_box, 0, 0, 0, 0);
-        Fl::set_boxtype(ext_box(INPUT_ACTIVE_BOX), ::ext_input_active_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_UP_BOX), ::ext_btn_up_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_DOWN_BOX), ::ext_btn_down_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_HOVER_BOX), ::ext_btn_hover_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(BTN_FRAME_BOX), ::ext_frame_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(INPUT_IDLE_BOX), ::ext_input_idle_box, 0, 0, 0, 0);
+        Fl::set_boxtype(fl_ext_box(INPUT_ACTIVE_BOX), ::ext_input_active_box, 0, 0, 0, 0);
     }
 };
 inline static Initializer initializer;
@@ -176,28 +176,24 @@ inline static Initializer initializer;
 template <typename Wd_B> //
 class Fl_Ext_Attrib
 {
-  protected:
+  private:
     Wd_B* widget_ = nullptr;
-    Fl_Boxtype normal_box_;
 
   public:
     inline Fl_Ext_Attrib(Wd_B* widget) : widget_(widget) {}
     inline Fl_Ext_Attrib(Wd_B& widget) : widget_(&widget) {}
 
     // pointer to the widget itself
+    Wd_B& widget() { return *widget_; }
+    Wd_B* widget_ptr() { return widget_; }
     operator Wd_B&() { return *widget_; }
     operator Wd_B*() { return widget_; }
-    Wd_B& widget_base() { return *this; }
 
     inline bool operator==(Fl_Ext_Attrib<Wd_B>&& target) { return (target.widget_ == widget_) ? true : false; }
 
     // box attrib extention
-    inline Fl_Boxtype normal_box() const { return normal_box_; }
-    inline void normal_box(Fl_Boxtype new_box)
-    {
-        normal_box_ = new_box;
-        widget_->box(normal_box_);
-    }
+    inline Fl_Boxtype normal_box() const { return widget_->box(); }
+    inline void normal_box(Fl_Boxtype new_box) { widget_->box(new_box); }
 
     // label and tooltip extensions
     inline std::string label() { return widget_->label(); }
@@ -207,28 +203,27 @@ class Fl_Ext_Attrib
     inline void tooltip(std::string text) { widget_->copy_tooltip(text.c_str()); }
 
     // color attrib extention
-    inline Ext_Color color() const { return {widget_->color(), true}; }
-    inline void color(Ext_Color color) { widget_->color(color); }
+    inline Fl_Ext_Color color() const { return {widget_->color(), true}; }
+    inline void color(Fl_Ext_Color color) { widget_->color(color); }
 
-    inline Ext_Color selection_color() const { return {widget_->selection_color(), true}; }
-    inline void selection_color(Ext_Color color) { widget_->selection_color(color); }
+    inline Fl_Ext_Color selection_color() const { return {widget_->selection_color(), true}; }
+    inline void selection_color(Fl_Ext_Color color) { widget_->selection_color(color); }
 
-    inline Ext_Color labelcolor() const { return {widget_->labelcolor(), true}; }
-    inline void labelcolor(Ext_Color color) { widget_->labelcolor(color); }
+    inline Fl_Ext_Color labelcolor() const { return {widget_->labelcolor(), true}; }
+    inline void labelcolor(Fl_Ext_Color color) { widget_->labelcolor(color); }
 
     // callback extension
     inline Flcb* callback() const { return static_cast<Flcb*>(widget_->user_data()); }
     inline void callback(Flcb* cb) { widget_->callback(flcb_bridge, cb); }
     inline void callback(Flcb& cb) { widget_->callback(flcb_bridge, &cb); }
 };
-
 template <typename Wd_B> //
-Fl_Ext_Attrib<Wd_B> make_ext_attr(Wd_B& widget)
+Fl_Ext_Attrib<Wd_B> make_ext(Wd_B& widget)
 {
     return Fl_Ext_Attrib<Wd_B>(widget);
 }
 template <typename Wd_B> //
-Fl_Ext_Attrib<Wd_B> make_ext_attr(Wd_B* widget)
+Fl_Ext_Attrib<Wd_B> make_ext(Wd_B* widget)
 {
     return Fl_Ext_Attrib<Wd_B>(widget);
 }
@@ -249,66 +244,53 @@ class Fl_Ext : public Wd_T
 template <typename Btn_B> //
 class Fl_Btn_Ext_Attrib : public Fl_Ext_Attrib<Btn_B>
 {
-  protected:
-    Fl_Boxtype click_box_;
-
   public:
     inline Fl_Btn_Ext_Attrib(Btn_B* button) //
         : Fl_Ext_Attrib<Btn_B>(button)
     {
-        init();
     }
     inline Fl_Btn_Ext_Attrib(Btn_B& button) //
         : Fl_Ext_Attrib<Btn_B>(button)
     {
-        init();
     }
 
-    void init()
-    {
-        this->widget_->box(ext_box(BTN_UP_BOX));
-        this->widget_->down_box(ext_box(BTN_DOWN_BOX));
-
-        this->normal_box_ = ext_box(BTN_UP_BOX);
-        click_box_ = ext_box(BTN_DOWN_BOX);
-    }
-
-    inline Fl_Boxtype click_box() const { return click_box_; }
-    inline void click_box(Fl_Boxtype new_box)
-    {
-        this->widget_->down_box(click_box_);
-        click_box_ = new_box;
-    }
+    inline Fl_Boxtype click_box() const { return this->widget().down_box(); }
+    inline void click_box(Fl_Boxtype new_box) { this->widget().down_box(new_box); }
 };
 
 template <typename Btn_T> //
-class Fl_Btn_Ext : public Btn_T
-{
-  public:
-    Fl_Btn_Ext_Attrib<Btn_T> ext;
-    inline Fl_Btn_Ext(int X, int Y, int W, int H, const char* L = 0) //
-        : Btn_T(X, Y, W, H, L),                                      //
-          ext(this)
-    {
-    }
-};
-
-template <> // special effect for normal button
-class Fl_Btn_Ext<Fl_Button> : public Fl_Button
+class Fl_Btn_Ext : public Fl_Ext<Btn_T>
 {
   private:
     Fl_Boxtype hover_box_;
+    Fl_Boxtype normal_box_;
+    Fl_Boxtype click_box_;
 
   public:
-    Fl_Btn_Ext_Attrib<Fl_Button> ext;
     inline Fl_Btn_Ext(int X, int Y, int W, int H, const char* L = 0) //
-        : Fl_Button(X, Y, W, H, L), ext(this)
+        : Fl_Ext<Btn_T>(X, Y, W, H, L)                               //
     {
-        hover_box_ = ext_box(BTN_HOVER_BOX);
+        hover_box_ = fl_ext_box(BTN_HOVER_BOX);
+        normal_box(fl_ext_box(BTN_UP_BOX));
+        click_box(fl_ext_box(BTN_DOWN_BOX));
     }
 
     inline Fl_Boxtype hover_box() const { return hover_box_; }
     inline void hover_box(Fl_Boxtype new_box) { hover_box_ = new_box; }
+
+    inline Fl_Boxtype click_box() const { return click_box_; }
+    inline void click_box(Fl_Boxtype new_box)
+    {
+        click_box_ = new_box;
+        this->ext.widget().down_box(click_box_);
+    }
+
+    inline Fl_Boxtype normal_box() const { return normal_box_; }
+    inline void normal_box(Fl_Boxtype new_box)
+    {
+        normal_box_ = new_box;
+        this->ext.widget().box(normal_box_);
+    }
 
     int handle(int event)
     {
@@ -318,20 +300,14 @@ class Fl_Btn_Ext<Fl_Button> : public Fl_Button
         {
             case FL_ENTER:
             {
-                box(hover_box_);
-                redraw();
+                this->ext.widget().box(hover_box_);
+                this->ext.widget().redraw();
                 break;
             }
             case FL_LEAVE:
             {
-                box(ext.normal_box());
-                redraw();
-                break;
-            }
-            case FL_DRAG:
-            {
-                box(ext.normal_box());
-                redraw();
+                this->ext.widget().box(normal_box_);
+                this->ext.widget().redraw();
                 break;
             }
         }
@@ -352,9 +328,9 @@ class Fl_Input_Ext : public Fl_Input
     Fl_Input_Ext(int X, int Y, int W, int H, const char* L = 0) //
         : Fl_Input(X, Y, W, H, L)
     {
-        box(ext_box(INPUT_IDLE_BOX));
-        active_box(ext_box(INPUT_ACTIVE_BOX));
-        selection_color(Ext_Color(0x0078D7));
+        box(fl_ext_box(INPUT_IDLE_BOX));
+        active_box(fl_ext_box(INPUT_ACTIVE_BOX));
+        selection_color(Fl_Ext_Color(0x0078D7));
     }
 
     Fl_Input_Ext& father() { return *this; }
