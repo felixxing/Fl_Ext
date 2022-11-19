@@ -12,6 +12,7 @@ file(GLOB_RECURSE SRC src/*.cpp)
 add_executable(Fl_Ext main.cpp ${SRC})
 
 include_directories(include)
+include_directories(ext_include)
 include_directories(FL)
 
 target_link_libraries(Fl_Ext fltk)
