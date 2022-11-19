@@ -120,7 +120,7 @@ namespace
 }; // namespace
 
 // widget extensions
-template <typename Wd_B> //
+template <typename Wd_B>
 class Fl_Ext_Attrib
 {
   private:
@@ -160,18 +160,18 @@ class Fl_Ext_Attrib
     inline void callback(Flcb* cb);
     inline void callback(Flcb& cb);
 };
-template <typename Wd_B> //
+template <typename Wd_B>
 Fl_Ext_Attrib<Wd_B> make_ext(Wd_B& widget)
 {
     return Fl_Ext_Attrib<Wd_B>(widget);
 }
-template <typename Wd_B> //
+template <typename Wd_B>
 Fl_Ext_Attrib<Wd_B> make_ext(Wd_B* widget)
 {
     return Fl_Ext_Attrib<Wd_B>(widget);
 }
 
-template <typename Wd_T> //
+template <typename Wd_T>
 class Fl_Ext : public Wd_T
 {
   public:
