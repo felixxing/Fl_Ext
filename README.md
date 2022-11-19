@@ -1,5 +1,5 @@
 # `Fl_Ext` - a FLTK extension header only library
-# The library is not feature compelete and just began.
+# The library is not feature compelete and just got started.
 
 This library is design to work side by side and make no changes to FLTK itself. Therefore, Fl_Ext can be applied directly on existing project
 
