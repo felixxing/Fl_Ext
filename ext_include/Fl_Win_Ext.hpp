@@ -23,8 +23,8 @@ inline Fl_Win_Ext<Win_T>::Fl_Win_Ext(int X, int Y, int W, int H, const char* L) 
       flow_(0, 0, W, H)
 {
     flow_.end();
-
     this->end();
+
     this->add(flow_);
     this->resizable(flow_);
 }
