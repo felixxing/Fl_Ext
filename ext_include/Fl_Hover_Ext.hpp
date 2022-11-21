@@ -18,7 +18,7 @@ class Fl_Hover_Ext : public Fl_Ext<Wd_T>
 
     inline Fl_Boxtype hover_box() const;
     inline void hover_box(Fl_Boxtype new_box);
-    
+
     void box() = delete;
     inline Fl_Boxtype normal_box() const;
     inline void normal_box(Fl_Boxtype new_box);
@@ -38,11 +38,11 @@ template <typename Wd_T>
 inline Fl_Hover_Ext<Wd_T>::Fl_Hover_Ext(int X, int Y, int W, int H, const char* L) //
     : Fl_Ext<Wd_T>(X, Y, W, H, L)                                                  //
 {
-    hover_box(Wd_T::box());
-    normal_box(Wd_T::box());
+    hover_box(Fl_Ext<Wd_T>::box());
+    normal_box(Fl_Ext<Wd_T>::box());
 
-    hover_color({Wd_T::color(), true});
-    normal_color({Wd_T::color(), true});
+    hover_color({Fl_Ext<Wd_T>::color(), true});
+    normal_color({Fl_Ext<Wd_T>::color(), true});
 }
 template <typename Wd_T>
 inline Fl_Boxtype Fl_Hover_Ext<Wd_T>::hover_box() const
@@ -66,7 +66,7 @@ template <typename Wd_T>
 inline void Fl_Hover_Ext<Wd_T>::normal_box(Fl_Boxtype new_box)
 {
     normal_box_ = new_box;
-    Wd_T::box(normal_box_);
+    Fl_Ext<Wd_T>::box(normal_box_);
 }
 
 template <typename Wd_T>
@@ -91,28 +91,28 @@ template <typename Wd_T>
 inline void Fl_Hover_Ext<Wd_T>::normal_color(Fl_Ext_Color new_color)
 {
     normal_color_ = new_color;
-    Wd_T::color(normal_color_);
+    Fl_Ext<Wd_T>::color(normal_color_);
 }
 
 template <typename Wd_T>
 inline int Fl_Hover_Ext<Wd_T>::handle(int event)
 {
-    int result = Wd_T::handle(event);
+    int result = Fl_Ext<Wd_T>::handle(event);
 
     switch (event)
     {
         case FL_ENTER:
         {
-            Wd_T::box(hover_box_);
-            Wd_T::color(hover_color_);
-            Wd_T::redraw();
+            Fl_Ext<Wd_T>::box(hover_box_);
+            Fl_Ext<Wd_T>::color(hover_color_);
+            Fl_Ext<Wd_T>::redraw();
             break;
         }
         case FL_LEAVE:
         {
-            Wd_T::box(normal_box_);
-            Wd_T::color(normal_color_);
-            Wd_T::redraw();
+            Fl_Ext<Wd_T>::box(normal_box_);
+            Fl_Ext<Wd_T>::color(normal_color_);
+            Fl_Ext<Wd_T>::redraw();
             break;
         }
     }

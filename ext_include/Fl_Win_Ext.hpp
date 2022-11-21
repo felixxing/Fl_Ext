@@ -20,7 +20,7 @@ class Fl_Win_Ext : public Fl_Ext<Win_T>
 template <typename Win_T>
 inline Fl_Win_Ext<Win_T>::Fl_Win_Ext(int X, int Y, int W, int H, const char* L) //
     : Fl_Ext<Win_T>(X, Y, W, H, L),                                             //
-      flow_(0, 0, W, H)
+      flow_(0, 0, sdpi(W), sdpi(H))
 {
     flow_.end();
     this->end();

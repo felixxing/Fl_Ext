@@ -179,6 +179,13 @@ class Fl_Ext : public Wd_T
   public:
     Fl_Ext_Attrib<Wd_T> attrib;
     inline Fl_Ext(int X, int Y, int W, int H, const char* L = 0);
+
+    void callback(Fl_Callback) = delete;
+    void default_callback() = delete;
+
+    void callback(Flcb* func);
+    void callback(Flcb& func);
+    Flcb* callback();
 };
 
 // implementations
@@ -357,6 +364,24 @@ inline Fl_Ext<Wd_T>::Fl_Ext(int X, int Y, int W, int H, const char* L) //
     : Wd_T(sdpi(X), sdpi(Y), sdpi(W), sdpi(H), L),                     //
       attrib(this)
 {
+}
+
+template <typename Wd_T>
+inline void Fl_Ext<Wd_T>::callback(Flcb* func)
+{
+    attrib.callback(func);
+}
+
+template <typename Wd_T>
+inline void Fl_Ext<Wd_T>::callback(Flcb& func)
+{
+    attrib.callback(func);
+}
+
+template <typename Wd_T>
+inline Flcb* Fl_Ext<Wd_T>::callback()
+{
+    return attrib.callback();
 }
 
 #endif // FL_EXT_HPP
