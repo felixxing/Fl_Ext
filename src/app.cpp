@@ -22,10 +22,6 @@ fc::App::~App()
 
 void fc::App::init()
 {
-    auto ccc = new Fl_Ext<Fl_Button>(0, 0, 0, 0);
-    static Flcb cccc = [](Fl_Widget* w) { std::cout << 111; };
-    ccc->callback(cccc);
-    rule(ccc, "=<=^");
 }
 
 void fc::App::exit()
